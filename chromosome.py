@@ -5,6 +5,9 @@ class Chromosome(object):
     def __init__(self, vector):
         self.vector = vector
 
+    def __repr__(self):
+        return str(self.vector)
+
     def get(self):
         return self.vector
 

@@ -35,6 +35,8 @@ class GeneNetwork(object):
         self.destination = destination
         self.population = []
         self.population_size = 0
+        self.results = []
+        self.best = None
 
     def start(self, gen_max, pop_size):
         """
@@ -55,8 +57,10 @@ class GeneNetwork(object):
                 newbie = self.crossover(self.population[parents[0]], self.population[parents[1]])
                 newbie.mutate()
                 fit = self.fitness(newbie)
-                pass
-
+                self.results.append((newbie, fit))
+                if self.best is None or self.best[1] > fit:
+                    self.best = (newbie, fit)
+        return self.best
 
     def generate_population(self, n):
         """
@@ -100,4 +104,5 @@ class GeneNetwork(object):
 
 if __name__ == "__main__":
     gene_network = GeneNetwork(dim, weights, chromosome_length, 3, 1)
-    gene_network.start(50, 10)  # start with 50 generations and 10 initial chromosomes
+    res = gene_network.start(50, 10)  # start with 50 generations and 10 initial chromosomes
+    print res
