@@ -18,6 +18,15 @@ def random_weights(dim):
                     weights[j][i] = 1000000
     return weights
 
+
+def pretty_matrix(matrix):
+    s = [[str(e) for e in row] for row in matrix]
+    lens = [max(map(len, col)) for col in zip(*s)]
+    fmt = '\t'.join('{{:{}}}'.format(x) + ',' for x in lens)
+    table = ['[ ' + fmt.format(*row) + ' ],' for row in s]
+    print '\n'.join(table)
+
 if __name__ == "__main__":
-    for weight in random_weights(10):
-        print str(weight) + ','
+    # for weight in random_weights(10):
+    #     print str(weight) + ','
+    pretty_matrix(random_weights(10))
