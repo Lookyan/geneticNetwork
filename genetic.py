@@ -1,15 +1,20 @@
 import random
 from chromosome import Chromosome
 
-dim = 5
+dim = 10
 chromosome_length = dim  # min is (dim - 2)
 
 weights = [
-    [0,    5,   2,   100,  7],
-    [5,    0,   3,    40,  4],
-    [2,    3,   0,     6, 13],
-    [100, 40,   6,     0, 12],
-    [7,    4,  13,    12,  0]
+    [0, 1000000, 11, 1, 1, 1000000, 1000000, 10, 9, 2],
+    [1000000, 0, 14, 1000000, 10, 15, 7, 3, 6, 1000000],
+    [11, 14, 0, 12, 6, 1, 7, 1000000, 14, 15],
+    [1, 1000000, 12, 0, 1000000, 2, 1000000, 1000000, 1000000, 5],
+    [1, 10, 6, 1000000, 0, 7, 1000000, 1, 9, 1000000],
+    [1000000, 15, 1, 2, 7, 0, 2, 1000000, 1000000, 2],
+    [1000000, 7, 7, 1000000, 1000000, 2, 0, 1000000, 1, 8],
+    [10, 3, 1000000, 1000000, 1, 1000000, 1000000, 0, 8, 1000000],
+    [9, 6, 14, 1000000, 9, 1000000, 1, 8, 0, 1000000],
+    [2, 1000000, 15, 5, 1000000, 2, 8, 1000000, 1000000, 0]
 ]
 
 quite = False
@@ -136,7 +141,8 @@ def pretty_print(to_print, hint=''):
     print hint + str(to_print)
     print '=================='
 
+
 if __name__ == "__main__":
-    gene_network = GeneNetwork(dim, weights, chromosome_length, 3, 4)
+    gene_network = GeneNetwork(dim, weights, chromosome_length, 1, 8)
     res = gene_network.start(10, 10)  # start with 10 generations and 10 initial chromosomes
     pretty_print(res, 'Solution: ')
