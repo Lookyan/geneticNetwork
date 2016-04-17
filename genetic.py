@@ -43,11 +43,15 @@ class GeneNetwork(object):
 
         :param gen_max: maximum number of generations
         :param pop_size: initial population size
-        :return:
+        :return: best solution found
         """
         gen = 1  # from first generation
         self.generate_population(pop_size)  # generate initial population
         self.population_size = pop_size
+        if not quite:
+            pretty_print('Initital:')
+            self.print_chromosomes(self.population)
+
         while gen <= gen_max:
             gen += 1
             p = 1
@@ -62,9 +66,25 @@ class GeneNetwork(object):
                 new_population.append(newbie)
                 if self.best is None or self.best[1] > fit:
                     self.best = (newbie, fit)
-            self.population = new_population
-            self.population_size = len(self.population)
+            if not quite:
+                pretty_print('%dth generation (after crossover, mutations): ' % gen)
+                self.print_chromosomes(new_population)
+            self.selection(self.population, new_population)
+            if not quite:
+                pretty_print('After selection: ')
+                self.print_chromosomes(new_population)
         return self.best
+
+    def selection(self, prev, now):
+        """
+
+        :param prev: previous generation
+        :param now: new generation
+        :return:
+        """
+        prev.extend(now)
+        prev.sort(lambda x, y: self.fitness(x) - self.fitness(y))
+        self.population = prev[:self.population_size]
 
     def generate_population(self, n):
         """
@@ -105,8 +125,18 @@ class GeneNetwork(object):
         chromosome_list = chromosome.get()
         return sum([self.weights[i][j] for i, j in zip(chromosome_list[:-1], chromosome_list[1:])])
 
+    def print_chromosomes(self, chromosomes):
+        for chromosome in chromosomes:
+            print str(chromosome) + ' ' + str(self.fitness(chromosome))
+
+
+def pretty_print(to_print, hint=''):
+    print ''
+    print '=================='
+    print hint + str(to_print)
+    print '=================='
 
 if __name__ == "__main__":
     gene_network = GeneNetwork(dim, weights, chromosome_length, 3, 4)
-    res = gene_network.start(50, 10)  # start with 50 generations and 10 initial chromosomes
-    print res
+    res = gene_network.start(10, 10)  # start with 10 generations and 10 initial chromosomes
+    pretty_print(res, 'Solution: ')
