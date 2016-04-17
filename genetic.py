@@ -26,7 +26,7 @@ class GeneNetwork(object):
         :param destination: destination node
         :return:
         """
-        if source >= dim - 1 or destination >= dim - 1:
+        if source >= dim or destination >= dim:
             raise ValueError
         self.chromosome_length = chromosome_length
         self.dim = dim
@@ -51,6 +51,7 @@ class GeneNetwork(object):
         while gen <= gen_max:
             gen += 1
             p = 1
+            new_population = list()
             while p <= self.population_size:
                 p += 1
                 parents = random.sample(range(self.population_size), 2)
@@ -58,8 +59,11 @@ class GeneNetwork(object):
                 newbie.mutate()
                 fit = self.fitness(newbie)
                 self.results.append((newbie, fit))
+                new_population.append(newbie)
                 if self.best is None or self.best[1] > fit:
                     self.best = (newbie, fit)
+            self.population = new_population
+            self.population_size = len(self.population)
         return self.best
 
     def generate_population(self, n):
@@ -103,6 +107,6 @@ class GeneNetwork(object):
 
 
 if __name__ == "__main__":
-    gene_network = GeneNetwork(dim, weights, chromosome_length, 3, 1)
+    gene_network = GeneNetwork(dim, weights, chromosome_length, 3, 4)
     res = gene_network.start(50, 10)  # start with 50 generations and 10 initial chromosomes
     print res
